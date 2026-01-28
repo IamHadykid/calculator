@@ -64,3 +64,18 @@ Math.cos = function (x) {
 Math.tan = function (x) {
   return _tan(isDegree ? x * Math.PI / 180 : x);
 };
+let deferredPrompt;
+const installBtn = document.getElementById("installBtn");
+
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  installBtn.hidden = false;
+
+  installBtn.addEventListener("click", async () => {
+    installBtn.hidden = true;
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
+    deferredPrompt = null;
+  });
+});
